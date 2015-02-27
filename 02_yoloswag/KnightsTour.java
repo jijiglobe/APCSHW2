@@ -101,7 +101,8 @@ public class KnightsTour{
     }
 
     public static void main(String[]args){
-	KnightsTour tour = new KnightsTour(Integer.parseInt(args[0]));
+	KnightsTour tour = new KnightsTour(5);
 	System.out.println(tour.solve());
+	System.out.println(tour);
     }
 }

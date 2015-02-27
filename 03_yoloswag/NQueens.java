@@ -28,75 +28,116 @@ public class NQueens{
     }
 
     public String toString(){
-	String ans = "\n";
-	for(int x=0;x<board.length;x++){
-	    for(int y=0;y<board[0].length;y++){
+	String ans = "";
+	for(int y=0;y<board[0].length;y++){
+	    for(int x=0;x<board.length;x++){
 		if(board[x][y]){
-		    ans+="Q";
+		    ans+="Q ";
 		}else{
-		    ans+=" ";
+		    ans+="# ";
 		}
 	    }
+	    ans+="\n";
 	}
-		
-	//build your knights tour here...
+		ans+="\n";
+	for(int y=0;y<location[0].length;y++){
+	    for(int x=0;x<location.length;x++){
+		ans+=" "+location[x][y];
+	    }
+	    ans+="\n";
+	}
+	
+
 	return hide + clear + go(0,0) + ans + "\n" + show;
     }
 
     public NQueens(int size){
 	board = new boolean[size][size];
 	location = new int[size][2];
+	for(int x=0;x<location.length;x++){
+	    for(int y=0;y<location[x].length;y++){
+		location[x][y] = -1;
+	    }
+	}
     }
 
     
 
     public boolean solve(){
-	return solve(0,0,0);
+	return solve(0);
     }
 
 
-    public boolean solve(int startx, int starty){
-	return solve(x,y,0);
-    }
-
-
-
-		
-    public boolean solve(int x,int y,int cmn){
-	//legal move check case
-	for(int i=0;i<location.length;i++){
-	    int x1 = location[i][0];
-	    int y1 = location[i][0];
-	    if(x1 == x)
-		return false;
-	    if(y1 == y){
-		return false;
-	    }if(Math.abs((y-y1)/(x-x1)) == 1){
-		return false;
+    public boolean solve(int starty){
+	if(solve(0,starty,0)){
+	    
+	    for(int x = 0;x<location.length;x++){
+		board[location[x][0]][location[x][1]] = true;
 	    }
-	}
-
-	//solved case
-	if(cmn == board.length){
 	    return true;
 	}
-	board[x][y] = true;
-	board[cmn][0] = x;
-	board[cmn][1] = y;
-	//move check case
-	boolean solvable = false
-	for(int i=0;i<board.length;i++){
-	    if(solve(x,i,cmn+1)){
-		solvable = true;
-	    }
-
-	}
-
-	wait(20);
-	System.out.println(this);
-				
 	return false;
     }
 
+    public boolean isvalid(int x,int y,int cmn){
+	
+	for(int i=0;i<location.length;i++){
+	    
+	    int x1 = location[i][0];
+	    int y1 = location[i][1];
+	    if(x1>=0){
+		//boolean good = true;
+		if(x1 == x){
+		    //good = false;
+		    
+		    return false;
+		}
+		if(y1 == y){
+		    //good = false;
+		    //		System.out.println("OMIGODWHY");
+		    // System.out.println(y);
+		    // System.out.println(y1);
+		    return false;
+		}
+		//System.out.println(x1);
+		//System.out.println(y1);
+		if(x-x1 == Math.abs(y-y1)){
+		    //good = false;
+		    //System.out.println("something else");
+		    return false;
+		}
+	   
+	    }
+	}
+	return true;	
+    }
+		
+    public boolean solve(int x,int y,int cmn){
+	if(cmn >= board.length) return true;
 
+	if(y<0 || y>=board.length) return false;
+	if(isvalid(x,y,cmn)){
+	    //  board[x][y] = true;
+	    location[cmn][0] = x;
+	    location[cmn][1] = y;
+	    //wait(20);
+	    //System.out.println(this);
+
+	    return solve(x+1,0,cmn+1)||solve(x,y+1,cmn);
+	}
+	
+	//	board[x][y] = false;
+	location[cmn][0] = -1;
+	location[cmn][1] = -1;
+	return solve(x,y+1,cmn);
+	//System.out.println(this);
+	//return false;
+	
+    }
+
+    public static void main(String[]args){
+	NQueens puzzle = new NQueens(20);
+	System.out.println(puzzle.solve(1));
+	System.out.println(puzzle);
+    }
 }
