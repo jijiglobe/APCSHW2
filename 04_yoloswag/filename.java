@@ -37,31 +37,60 @@ public class filename{
     }
 
     public static void stomp(int xcor, int ycor, int stomps){
-	int[] stuffs = new int[9];
-	for(int x = xcor
+	//int[] stuffs = new int[9];
+	int max = 0;
+
+	for(int x = -1;x<2;x++){ // attain maximum thing
+	    for(int y=-1;y<2;y++){
+		//stuffs[3*y+x] = intpasture[x][y];
+		//System.out.println(""+(x+xcor)+" , "+(y+ycor));
+		if(intpasture[x+xcor][y+ycor] > max)
+		    max = intpasture[x+xcor][y+ycor];
+	    }
+	}
+	//System.out.println(Arrays.deepToString(intpasture));
+	//System.out.println(max);
+	for(int x = -1;x<2;x++){
+	    for(int y=-1;y<2;y++){
+		if(intpasture[x+xcor][y+ycor] > max-stomps)
+		    //System.out.println("Blarglewargle");
+		    intpasture[x+xcor][y+ycor] = max-stomps;
+	    }
+	}
+    }
+    
+    public static void doStomps(){
+	for(int x=0;x<instructions.length;x++){
+	    stomp(instructions[x][0],instructions[x][1],instructions[x][2]);
+	}
+    }
+    
+    public static void fill(){
+	for(int x=0;x<intpasture.length;x++){
+	    for(int y=0;y<intpasture[x].length;y++){
+		intpasture[x][y] = E-intpasture[x][y];
+	    }
+	}
+    }
+    
+    public static int calculate(){
+	int agg = 0;
+	for(int x=0;x<intpasture.length;x++){
+	    for(int y=0;y<intpasture[x].length;y++){
+		if(intpasture[x][y]>0){
+		    agg+=intpasture[x][y];
+		}
+	    }
+	}
+	return agg*72*72;
     }
 
+    //YOUR MAIN IS HERE!!!!!
     public static void main(String[]args){
 	makeusablestuff(pasture);
-	for(int i=0; i<intpasture.length;i++){
-	    //	    System.out.println(Arrays.asList(intpasture[i]));
-	    String shit = "";
-	    for(int t=0;t<intpasture[i].length;t++){
-		shit+=intpasture[i][t];
-	    }
-	    System.out.println(shit);
-
-	}
-	//System.out.println(instructions);
-	for(int i=0; i<instructions.length;i++){
-	    //	    System.out.println(Arrays.asList(intpasture[i]));
-	    String shit = "";
-	    for(int t=0;t<instructions[i].length;t++){
-		shit+=instructions[i][t];
-	    }
-	    System.out.println(shit);
-
-	}
-	//System.out.println(instructions);
+	doStomps();
+	fill();
+	//System.out.println(Arrays.deepToString(intpasture));
+	System.out.println(calculate());
     }
 }
