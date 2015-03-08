@@ -1,0 +1,70 @@
+import java.util.*;
+
+public class Quick{
+    public static Random random = new Random();
+    public static void swap(int[] array,int x1,int y1){
+	int backup = array[y1];
+	array[y1] = array[x1];
+	array[x1] = backup;
+    }
+    public static int  partition(int[] list, int left, int right, int p){
+	int compare = list[p];
+	swap(list,p,right);
+
+	int storeIndex = left;
+	for(int i=left;i<right;i++){
+	    if(list[i] < compare){
+		swap(list,storeIndex,i);
+		storeIndex++;
+	    }
+	}
+	swap(list,right,storeIndex);
+	return storeIndex;
+    }
+
+    public static void quickh(int[] list,int left,int right){
+	if(left<right){
+	    int p = random.nextInt(right-left)+left+1;
+	    partition(list,left,right-1,p);
+	    quickh(list,left,p);
+	    quickh(list,p,right);
+	}
+    }
+
+    /*   public static void partition(int[] array,int p){
+	int compare = p;
+	int s=0;
+	int e=array.length-1;
+	for(int i=0;i<e;i++){
+	    if(array[i]<compare){
+		swap(array,s,i);
+		s++;
+	    }
+	    if(array[i] > compare){
+		swap(array,e,i);
+		e--;
+	    }	    
+	}
+	array[s] = compare;
+	}*/
+    
+    public static void main(String[]args){
+	int length = Integer.parseInt(args[0]);
+        int[] array = new int[10];
+	Random r = new Random(10);
+	for(int i=0;i<length;i++){
+	    array[i] = i;
+	}
+	for(int i=0;i<length;i++){
+	    swap(array,i,r.nextInt(length));
+	}
+	System.out.println(Arrays.toString(array));
+	quickh(array,0,length-1);
+	//partition(array,0,length-1,5);
+	//swap(array,0,9);
+	System.out.println(Arrays.toString(array));
+		
+    }
+    
+	    
+}
