@@ -47,7 +47,7 @@ public class MyLinkedList<T> implements Iterable<T>{
 	length++;
     }
     
-    public LNode<T> getNode(int i){
+    private LNode<T> getNode(int i){
 	LNode<T> current = initial;
 	for(int x =0;x<i;x++){
 	    current = current.getNext();

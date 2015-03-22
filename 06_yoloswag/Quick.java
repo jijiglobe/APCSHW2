@@ -7,28 +7,39 @@ public class Quick{
 	array[y1] = array[x1];
 	array[x1] = backup;
     }
-    public static int  partition(int[] list, int left, int right, int p){
+    public static int[] partition(int[] list, int left, int right, int p){
 	int compare = list[p];
 	swap(list,p,right);
-
+	int copies = 0;
 	int storeIndex = left;
-	for(int i=left;i<right;i++){
+	for(int i=left;i<right-1;i++){
 	    if(list[i] < compare){
 		swap(list,storeIndex,i);
 		storeIndex++;
 	    }
+	    if(list[i] == compare){
+		swap(list,storeIndex,right - copies);
+		copies++;
+	    }
+	}
+	System.out.println(Arrays.toString(list));
+	int before = storeIndex;
+	for(int i=1;i<copies;i++){
+	    swap(list,storeIndex,right-i);
+	    storeIndex--;
 	}
 	swap(list,right,storeIndex);
-	return storeIndex;
+	return new int[] {before,storeIndex};
+	
     }
     
     public static void quickh(int[] list,int left,int right){
 	if(left<right-1){
-	    int p = partition(list,left,right,random.nextInt(right-left)+left);
+	    int[] p = partition(list,left,right,random.nextInt(right-left)+left);
 	    //System.out.println(p);
 	    //partition(list,left,right-1,p);
-	    quickh(list,left,p);
-	    quickh(list,p,right);
+	    quickh(list,left,p[0]);
+	    quickh(list,p[1],right);
 	}
     }
 
@@ -64,13 +75,15 @@ public class Quick{
         int[] array = new int[length];
 	Random r = new Random(length);
 	for(int i=0;i<length;i++){
-	    array[i] = i;
+	    array[i] = i/2;
 	}
 	for(int i=0;i<length;i++){
 	    swap(array,i,r.nextInt(length));
 	}
 	//	System.out.println(Arrays.toString(array));
-	sorts.quick(array);
+	System.out.println(Arrays.toString(array));
+	//quick(array);
+	partition(list,0,length-1,5);
 	if(isSorted(array)){
 	    System.out.println("YOU DIDIT");
 	}else{
