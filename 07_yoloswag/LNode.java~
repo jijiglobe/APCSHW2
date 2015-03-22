@@ -1,0 +1,32 @@
+public class LNode<T>{
+    private LNode<T> next;
+    private T value;
+
+    public LNode(){
+	this(null);
+    }
+    
+    public LNode(T newval){
+	setValue(newval);
+    }
+    
+    public T getValue(){
+	return value;
+    }
+    
+    public LNode<T> getNext(){
+	return next;
+    }
+    
+    public void setValue(T newval){
+	value = newval;
+    }
+    
+    public void setNext(LNode<T> newnext){
+	next = newnext;
+    }
+    
+    public String toString(){
+	return ""+value;
+    }
+}

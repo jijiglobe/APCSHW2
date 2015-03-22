@@ -1,13 +1,9 @@
 import java.util.*;
 import java.io.*;
-public class MyLinkedList<T> implements Iterable<T>{
+public class MyLinkedList<T>{
     private LNode<T> initial,last;
     private int length;
-  
-    public LNode<T> getLast(){
-	return last;
-    }
-  
+    
     public MyLinkedList(){
 	this(null);
     }
@@ -35,14 +31,6 @@ public class MyLinkedList<T> implements Iterable<T>{
 	length++;
     }
     
-    public void add(T data, int i){
-	LNode<T> current = getNode(i-1);
-	LNode<T> nnode = new LNode<T>(data);
-	nnode.setNext(current.getNext());
-	current.setNext(nnode);
-	length++;
-    }
-    
     private LNode<T> getNode(int i){
 	LNode<T> current = initial;
 	for(int x =0;x<i;x++){
@@ -51,7 +39,7 @@ public class MyLinkedList<T> implements Iterable<T>{
 	return current.getNext();
     }
     
-    public T get(int i){
+    public T get(i){
 	return getNode(i).getVal();
     }
 
@@ -60,36 +48,11 @@ public class MyLinkedList<T> implements Iterable<T>{
     }
     
     public T remove(int i){
-	LNode<T> tbr = getNode(i);
+	LNode<T> tbr = get(i);
 	tbr.getPrev().setNext(tbr.getNext());
 	tbr.getNext().setPrev(tbr.getPrev()); 
 	length--;
 	return tbr.getVal();
-    }
-    
-    public Iterate<T> iterator(){
-	return new Iterate<T>(initial.getNext());
-    }
-
-    public class Iterate<T> implements Iterator<T>{
-	private LNode<T> current;
-	
-	public Iterate(LNode<T> start){
-	    current = start;
-	}
-
-	public boolean hasNext(){
-	    return current.getNext()!=null;
-	}
-	
-	public T next(){
-	    current = current.getNext();
-	    return current.getVal();
-	}
-
-	public void remove(){
-	    throw new UnsupportedOperationException();
-	}
     }
     
     public static void main(String[]args){
@@ -100,19 +63,12 @@ public class MyLinkedList<T> implements Iterable<T>{
 	    mine.add(i);
 	    theirs.add(i);
 	}
-	/*for(int i=0;i<5;i++){
-	  Random r =  new Random();
-	  int x = r.nextInt(mine.size()-1);
-	  mine.add(x,x);
-	  theirs.add(x,x);
-	  }*/
-	for(int cval : mine){
-	    System.out.println(cval);
+	for(int i=0;i<5;i++){
+	    Random r =  new Random();
+	    int x = r.nextInt(mine.size());
+	    mine.remove(x);
+	    theirs.remove(r);
 	}
-	for(int cval : theirs){
-	    System.out.println(cval);
-	}
-	
 	System.out.println(mine);
 	System.out.println(theirs);
 	System.out.println(mine.toString().equals(theirs.toString()));
