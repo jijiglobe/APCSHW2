@@ -32,19 +32,21 @@ public class MyLinkedList<T> implements Iterable<T>{
 	return ans + "]";
     }
     
-    public void add(T data){
+    public boolean add(T data){
 	last.setNext(new LNode<T>(data));
 	last.getNext().setPrev(last);
 	last = last.getNext();
 	length++;
+	return true;
     }
     
-    public void add(T data, int i){
+    public boolean add(T data, int i){
 	LNode<T> current = getNode(i-1);
 	LNode<T> nnode = new LNode<T>(data);
 	nnode.setNext(current.getNext());
 	current.setNext(nnode);
 	length++;
+	return true;
     }
     
     public LNode<T> getNode(int i){
