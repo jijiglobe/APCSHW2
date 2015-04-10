@@ -35,6 +35,22 @@ public class MyDeque<T>{
 	}
 	
     }
+    public void addLast(T val){
+	if(start!=fin || size==0){
+	    if(fin<queue.length-1){
+		fin++;
+		size++;
+		queue[fin-1] = val;
+	    }else{
+		fin = 0;
+		size++;
+		queue[queue.length-1] = val;
+	    }
+	}else{
+	     enlarge(size*2);
+	     addLast(val);
+	}
+    }
     
     //    public void enlarge(int nsize){
     public boolean hasNext(){
@@ -77,19 +93,21 @@ public class MyDeque<T>{
 	}
 	queue = holder;
 	start = nstart;
-	fin = nfin;
+	fin = (nfin)%nsize;
 	size = nsize/2;
+	//System.out.println(Arrays.toString(queue));
+
     }
 
-    public static void main(String[]args){
+    /*public static void main(String[]args){
 	MyDeque<Integer> deq = new MyDeque<Integer>();
 	for(Integer x = 0;x<20;x++){
+	    System.out.println(Arrays.toString(deq.getQueue()));
 	    deq.addFirst(x);
-	    //System.out.println(Arrays.toString(deq.getQueue()));
 	}
 	while(deq.hasNext()){
 	    System.out.println(deq.removeFirst());
 
 	}
-    }
+	}*/
 }
