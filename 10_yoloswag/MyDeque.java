@@ -7,6 +7,10 @@ public class MyDeque<T>{
 	return "fairchild.jion";
     }
 
+    public T[] getQueue(){
+	return queue;
+    }
+
     @SuppressWarnings("unchecked")
     public MyDeque(){
 	queue = (T[]) (new Object[15]);
@@ -15,23 +19,30 @@ public class MyDeque<T>{
     }
     
     public void addFirst(T val){
-	if(size<queue.length){
-	    start--;
-	    size++;
-	    queue[start] = val;
+	if(start!=fin || size==0){
+	    if(start!=0){
+		start--;
+		size++;
+		queue[start] = val;
+	    }else{
+		start = queue.length-1;
+		size++;
+		queue[start] = val;
+	    }
 	}else{
-	    enlarge(size*2);
+	     enlarge(size*2);
+	     addFirst(val);
 	}
-	addFirst(val);
+	
     }
     
     //    public void enlarge(int nsize){
     public boolean hasNext(){
-	return start!=fin;
+	return size!=0;
     }
 
     public T removeFirst(){
-	if(start!=queue.length){
+	if(start<queue.length-1){
 	    size--;
 	    start++;
 	    return queue[start-1];
@@ -47,23 +58,38 @@ public class MyDeque<T>{
 	if(fin!=0){
 	    fin--;
 	    size--;
-	    return queue[fin++];
+	    return queue[fin];
 	}else{
 	    fin = queue.length -1;
 	    size --;
-	    return queue[0];
+	    return queue[queue.length-1];
 	}
     }
 
     @SuppressWarnings("unchecked")
     public void enlarge(int nsize){
         T[] holder = (T[]) (new Object[nsize]);
-	start =nsize/2;
-	fin = start;
+	int nstart = nsize/2;
+	int nfin = nstart;
 	while(hasNext()){
-	    holder[fin] = removeLast();
-	    fin++;
+	    holder[nfin] = removeFirst();
+	    nfin++;
 	}
 	queue = holder;
+	start = nstart;
+	fin = nfin;
+	size = nsize/2;
+    }
+
+    public static void main(String[]args){
+	MyDeque<Integer> deq = new MyDeque<Integer>();
+	for(Integer x = 0;x<20;x++){
+	    deq.addFirst(x);
+	    //System.out.println(Arrays.toString(deq.getQueue()));
+	}
+	while(deq.hasNext()){
+	    System.out.println(deq.removeFirst());
+
+	}
     }
 }
