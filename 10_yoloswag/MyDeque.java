@@ -7,14 +7,14 @@ public class MyDeque<T>{
 	return "fairchild.jion";
     }
 
+    @SuppressWarnings("unchecked")
     public MyDeque(){
-	queue = new T[10];
-        start = 4;
-	fin = 4;
+	queue = (T[]) (new Object[15]);
+        start = 7;
+	fin = 7;
     }
     
     public void addFirst(T val){
-	
 	if(size<queue.length){
 	    start--;
 	    size++;
@@ -31,16 +31,39 @@ public class MyDeque<T>{
     }
 
     public T removeFirst(){
-	size--;
-	start++;
-	return queue[start-1];
+	if(start!=queue.length){
+	    size--;
+	    start++;
+	    return queue[start-1];
+	}else{
+	    size --;
+	    start = 0;
+	    return queue[queue.length-1];
+	}
     }
+
 	
     public T removeLast(){
-	fin--;
-	size--;
-	return queue[fin++];
+	if(fin!=0){
+	    fin--;
+	    size--;
+	    return queue[fin++];
+	}else{
+	    fin = queue.length -1;
+	    size --;
+	    return queue[0];
+	}
     }
-    
-    
+
+    @SuppressWarnings("unchecked")
+    public void enlarge(int nsize){
+        T[] holder = (T[]) (new Object[nsize]);
+	start =nsize/2;
+	fin = start;
+	while(hasNext()){
+	    holder[fin] = removeLast();
+	    fin++;
+	}
+	queue = holder;
+    }
 }
