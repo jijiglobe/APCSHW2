@@ -8,7 +8,16 @@ public class Maze{
     private String go(int x,int y){
 	return ("\033[" + x + ";" + y + "H");
     }
-    private char[][] board;
+    private String[][] board;
+
+    public void wait(int millis){
+	try {
+	    Thread.sleep(millis);
+	}
+	catch (InterruptedException e) {
+
+	}
+    }
 
 
     /** Same constructor as before...*/
@@ -19,13 +28,13 @@ public class Maze{
      	//Scanner fileScanner = new Scanner(new File("c:\\file.txt"));
 	String content = new Scanner(new File(filename)).useDelimiter("\\Z").next();
 	String[] contentLines = content.split("\n");
-	board = new char[contentLines.length][];
+	board = new String[contentLines.length][];
 	for(int x = 0;x<contentLines.length;x++){
 	    String line = contentLines[x];
 	    char[] cars = line.toCharArray();
-	    board[x] = new char[cars.length];
+	    board[x] = new String[cars.length];
 	    for(int i=0;i<cars.length;i++){
-		board[x][i] = cars[i];
+		board[x][i] =""+ cars[i];
 	    }
 	}
     }
@@ -34,9 +43,13 @@ public class Maze{
 	String ans = "";
 	for(int x=0;x<board.length;x++){
 	    for(int y=0;y<board[x].length;y++){
-		ans += board[x][y];
+		if(board[x][y].length() == 1){
+		    ans +="  " + board[x][y];
+		}else{
+		    ans+=" "+board[x][y];
+		}
 	    }
-	    ans+="\n";
+	    ans+="\n\n";
 	}
 	return ans;
     }
@@ -45,7 +58,11 @@ public class Maze{
 
 
     public String toString(boolean animate){ 
-	return toString();
+	if(animate){
+	    return clear+hide+toString();
+	}else{
+	    return toString();
+	}
     } //do the funky character codes when animate is true
     //this to string will be used in your animate, it would include the go(0,0) character, 
     //as well as the clear/hide/show characters as you need to use them.
@@ -55,9 +72,73 @@ public class Maze{
      * When animate is true, print the board at each step of the algorithm.
      * Replace spaces with x's as you traverse the maze. 
      */
+    public Coordinate findStart(){
+	for(int x=0;x<board.length;x++){
+	    for(int y=0;y<board[x].length;y++){
+		if( board[x][y].equals("S")){
+		    return new Coordinate(x,y,0);
+		}
+	    }
+	}
+	return null;
+    }
+
+    public void addCoordinate(int x, int y, MyDeque<Coordinate> queue, int counter){
+	if(x >=0 && x<board.length && 
+	   y >=0 && y<board[0].length &&
+	   board[x][y].equals(" ")){
+	    queue.addLast(new Coordinate(x,y,counter+1));
+	}
+    }
+	    
+ public boolean traceCoordinate(int x, int y, MyDeque<Coordinate> queue, int counter){
+	if(x >=0 && x<board.length && 
+	   y >=0 && y<board[0].length &&
+	   board[x][y].equals("" + (counter - 1))){
+	    queue.addLast(new Coordinate(x,y,counter+1));
+	    return true;
+	}
+	return false;
+    }
+
     public boolean solveBFS(boolean animate){   
-	return true;
-	
+	MyDeque<Coordinate> moves = new MyDeque<Coordinate>();
+	moves.addLast(findStart());
+	Coordinate current;
+	while(moves.hasNext()){
+	    board[cx][cy] =""+ cc;
+	    if(animate){
+		wait(2);
+		System.out.println(this.toString(true));
+	    }
+	    addCoordinate(cx+1,cy,moves,cc);
+	    addCoordinate(cx-1,cy,moves,cc);
+	    addCoordinate(cx,cy+1,moves,cc);
+	    addCoordinate(cx,cy-1,moves,cc);	    
+	}
+	return false;
+    }
+    
+    public MyDeque<Coordinate> trace(Coordinate pen){
+	MyDeque<Coordinate> path = new myDeque<Coordinate>();
+	while(current.c!=0){
+	    int cx = current.x;
+	    int cy = current.y;
+	    int cc = current.c;
+	    if(traceCoordinate(cx+1,cy,path,cc)){
+	    }else if(traceCoordinates(cx-1,cy,path,cc)){
+	    }else if(traceCoordinates(cx,cy+1,path,cc)){
+		traceCoordinates(cx,cy-1,path,cc);
+	    }
+	}
+    }
+    
+    public void highlight(Coordinate pen){
+	myDeque<Coordinate> path = trace(pen);
+	while(path.hasNext()){
+	    
+					 
+
     }
     
     /**Solve the maze using a frontier in a DFS manner. 
@@ -82,7 +163,8 @@ public class Maze{
 
     public static void main(String[]args) throws Exception{
 	Maze myMaze = new Maze("myMaze");
-	System.out.println(myMaze);
+	myMaze.solveBFS(true);
+	System.out.println(myMaze.toString(true));
 
     }
 }
