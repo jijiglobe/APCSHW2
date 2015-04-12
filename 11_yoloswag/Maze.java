@@ -8,8 +8,9 @@ public class Maze{
     private String go(int x,int y){
 	return ("\033[" + x + ";" + y + "H");
     }
-    private String[][] board;
 
+    private String[][] board;
+    private int[] solution;
     public void wait(int millis){
 	try {
 	    Thread.sleep(millis);
@@ -114,7 +115,8 @@ public class Maze{
 	    if(cx >=0 && cx<board.length && 
 	       cy >=0 && cy<board[0].length &&
 	       board[cx][cy].equals("E")){
-		highlight(current);
+		//highlight(current);
+		solution = solutionCoordinates(current);
 		return true;
 	    }		
 
@@ -177,7 +179,8 @@ public class Maze{
 	    if(cx >=0 && cx<board.length && 
 	       cy >=0 && cy<board[0].length &&
 	       board[cx][cy].equals("E")){
-		highlight(current);
+		//highlight(current);
+		solution = solutionCoordinates(current);
 		return true;
 	    }		
 
@@ -206,13 +209,30 @@ public class Maze{
      *Precondition :  solveBFS() OR solveDFS() has already been called (otherwise an empty array is returned)
      *Postcondition:  the correct solution is in the returned array
      */
-    public int[] solutionCoordinates(){return new int[2]; }    
+    public int[] solutionCoordinates(Coordinate pen){
+	MyDeque<Coordinate> path = trace(pen);
+	int[] ans = new int[path.Size()*2];
+	int i = 0;
+	while(path.hasNext()){
+	    Coordinate holder = path.removeLast();
+	    ans[i] = holder.x;
+	    i++;
+	    ans[i] = holder.y;
+	    i++;
+	}				 
+	return ans;
+    }    
 
+    public int[] solutionCoordinates(){
+	return solution;
+    }
+    /*
     public static void main(String[]args) throws Exception{
 	Maze myMaze = new Maze("myMaze");
-	System.out.println(myMaze.solveBFS(false));
-	System.out.println(myMaze.toString(false));
+	System.out.println(myMaze.solveBFS(true));
+	System.out.println(Arrays.toString(myMaze.solutionCoordinates()));
+	//System.out.println(myMaze.toString(false));
 
-    }
+	}*/
 }
 
