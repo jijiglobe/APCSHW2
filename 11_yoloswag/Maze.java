@@ -86,7 +86,7 @@ public class Maze{
     public void addCoordinate(int x, int y, MyDeque<Coordinate> queue, int counter){
 	if(x >=0 && x<board.length && 
 	   y >=0 && y<board[0].length &&
-	   board[x][y].equals(" ")){
+	   (board[x][y].equals(" ") || board[x][y].equals("E"))){
 	    queue.addLast(new Coordinate(x,y,counter+1));
 	}
     }
@@ -106,6 +106,18 @@ public class Maze{
 	moves.addLast(findStart());
 	Coordinate current;
 	while(moves.hasNext()){
+	    current = moves.removeFirst();
+	    int cx = current.x;
+	    int cy = current.y;
+	    int cc = current.c;
+	    
+	    if(cx >=0 && cx<board.length && 
+	       cy >=0 && cy<board[0].length &&
+	       board[cx][cy].equals("E")){
+		highlight(current);
+		return true;
+	    }		
+
 	    board[cx][cy] =""+ cc;
 	    if(animate){
 		wait(2);
@@ -120,32 +132,67 @@ public class Maze{
     }
     
     public MyDeque<Coordinate> trace(Coordinate pen){
-	MyDeque<Coordinate> path = new myDeque<Coordinate>();
+	MyDeque<Coordinate> path = new MyDeque<Coordinate>();
+	Coordinate current = pen;
 	while(current.c!=0){
 	    int cx = current.x;
 	    int cy = current.y;
 	    int cc = current.c;
 	    if(traceCoordinate(cx+1,cy,path,cc)){
-	    }else if(traceCoordinates(cx-1,cy,path,cc)){
-	    }else if(traceCoordinates(cx,cy+1,path,cc)){
-		traceCoordinates(cx,cy-1,path,cc);
+		current = new Coordinate(cx+1,cy,cc-1);
+	    }else if(traceCoordinate(cx-1,cy,path,cc)){
+		current = new Coordinate(cx-1,cy,cc-1);	    
+	    }else if(traceCoordinate(cx,cy+1,path,cc)){
+		current = new Coordinate(cx,cy+1,cc-1);
+	    }else{
+		traceCoordinate(cx,cy-1,path,cc);
+		current = new Coordinate(cx,cy-1,cc-1);
 	    }
 	}
+	return path;
     }
     
     public void highlight(Coordinate pen){
-	myDeque<Coordinate> path = trace(pen);
+	MyDeque<Coordinate> path = trace(pen);
 	while(path.hasNext()){
-	    
-					 
-
+	    Coordinate holder = path.removeLast();
+	    board[holder.x][holder.y] = "P";
+	}				 
     }
     
     /**Solve the maze using a frontier in a DFS manner. 
      * When animate is true, print the board at each step of the algorithm.
      * Replace spaces with x's as you traverse the maze. 
      */
-    public boolean solveDFS(boolean animate){return false;    }
+    public boolean solveDFS(boolean animate){
+	MyDeque<Coordinate> moves = new MyDeque<Coordinate>();
+	moves.addLast(findStart());
+	Coordinate current;
+	while(moves.hasNext()){
+	    current = moves.removeLast();
+	    int cx = current.x;
+	    int cy = current.y;
+	    int cc = current.c;
+	    
+	    if(cx >=0 && cx<board.length && 
+	       cy >=0 && cy<board[0].length &&
+	       board[cx][cy].equals("E")){
+		highlight(current);
+		return true;
+	    }		
+
+	    board[cx][cy] =""+ cc;
+	    if(animate){
+		wait(2);
+		System.out.println(this.toString(true));
+	    }
+	    addCoordinate(cx+1,cy,moves,cc);
+	    addCoordinate(cx-1,cy,moves,cc);
+	    addCoordinate(cx,cy+1,moves,cc);
+	    addCoordinate(cx,cy-1,moves,cc);	    
+	}
+	return false;
+    }
 
     public boolean solveBFS(){
 	return solveBFS(false);
@@ -163,8 +210,8 @@ public class Maze{
 
     public static void main(String[]args) throws Exception{
 	Maze myMaze = new Maze("myMaze");
-	myMaze.solveBFS(true);
-	System.out.println(myMaze.toString(true));
+	System.out.println(myMaze.solveBFS(false));
+	System.out.println(myMaze.toString(false));
 
     }
 }
