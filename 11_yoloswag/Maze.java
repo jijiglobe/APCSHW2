@@ -20,6 +20,13 @@ public class Maze{
 	}
     }
 
+    public boolean solve(boolean animate, int mode){
+	if(mode == 0){
+	    return solveBFS(animate);
+	}else{
+	    return solveDFS(animate);
+	}
+    }
 
     /** Same constructor as before...*/
     public Maze(String filename)throws Exception{ 
