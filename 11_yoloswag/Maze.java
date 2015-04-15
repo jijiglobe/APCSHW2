@@ -67,7 +67,7 @@ public class Maze{
 
     public String toString(boolean animate){ 
 	if(animate){
-	    return clear+hide+toString();
+	    return clear+go(0,0)+hide+toString();
 	}else{
 	    return toString();
 	}
@@ -93,9 +93,13 @@ public class Maze{
 
     public void addCoordinate(int x, int y, MyDeque<Coordinate> queue, int counter){
 	if(x >=0 && x<board.length && 
-	   y >=0 && y<board[0].length &&
-	   (board[x][y].equals(" ") || board[x][y].equals("E"))){
-	    queue.addLast(new Coordinate(x,y,counter+1));
+	   y >=0 && y<board[0].length){
+	    if(board[x][y].equals(" ")){
+		board[x][y] = "?";
+		queue.addLast(new Coordinate(x,y,counter+1));
+	    }if(board[x][y].equals("E")){
+		queue.addLast(new Coordinate(x,y,counter+1));
+	    }
 	}
     }
 	    
@@ -130,6 +134,7 @@ public class Maze{
 	    board[cx][cy] =""+ cc;
 	    if(animate){
 		wait(2);
+		//System.out.println(Arrays.toString(moves.getQueue()));
 		System.out.println(this.toString(true));
 	    }
 	    addCoordinate(cx+1,cy,moves,cc);
@@ -233,13 +238,12 @@ public class Maze{
     public int[] solutionCoordinates(){
 	return solution;
     }
-    /*
+    
     public static void main(String[]args) throws Exception{
 	Maze myMaze = new Maze("myMaze");
 	System.out.println(myMaze.solveBFS(true));
 	System.out.println(Arrays.toString(myMaze.solutionCoordinates()));
 	//System.out.println(myMaze.toString(false));
-
-	}*/
+	}
 }
 
