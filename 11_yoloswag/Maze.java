@@ -8,7 +8,7 @@ public class Maze{
     private String go(int x,int y){
 	return ("\033[" + x + ";" + y + "H");
     }
-
+    private Coordinate end,start;
     private String[][] board;
     private int[] solution;
     public void wait(int millis){
@@ -45,6 +45,8 @@ public class Maze{
 		board[x][i] =""+ cars[i];
 	    }
 	}
+	end = findEnd();
+	start = findStart();
     }
 
     public String toString(){
@@ -91,6 +93,17 @@ public class Maze{
 	return null;
     }
 
+    public Coordinate findEnd(){
+	for(int x=0;x<board.length;x++){
+	    for(int y=0;y<board[x].length;y++){
+		if( board[x][y].equals("E")){
+		    return new Coordinate(x,y,0);
+		}
+	    }
+	}
+	return null;
+    }
+
     public void addCoordinate(int x, int y, MyDeque<Coordinate> queue, int counter){
 	if(x >=0 && x<board.length && 
 	   y >=0 && y<board[0].length){
@@ -99,6 +112,18 @@ public class Maze{
 		queue.addLast(new Coordinate(x,y,counter+1));
 	    }if(board[x][y].equals("E")){
 		queue.addLast(new Coordinate(x,y,counter+1));
+	    }
+	}
+    }
+
+    public void addCoordinateWithPriority(int x, int y, PQ<Coordinate> queue, int counter, int priority){
+	if(x >=0 && x<board.length && 
+	   y >=0 && y<board[0].length){
+	    if(board[x][y].equals(" ")){
+		board[x][y] = "?";
+		queue.addFirst(new Coordinate(x,y,counter+1),priority);
+	    }if(board[x][y].equals("E")){
+		queue.addFirst(new Coordinate(x,y,counter+1),priority);
 	    }
 	}
     }
@@ -112,7 +137,7 @@ public class Maze{
 	}
 	return false;
     }
-
+        
     public boolean solveBFS(boolean animate){   
 	MyDeque<Coordinate> moves = new MyDeque<Coordinate>();
 	moves.addLast(findStart());
@@ -144,6 +169,78 @@ public class Maze{
 	}
 	return false;
     }
+
+    public boolean solveBest(boolean animate){   
+	PQ<Coordinate> moves = new PQ<Coordinate>();
+	moves.addLast(findStart(),0);
+	Coordinate current;
+	while(moves.hasNext()){
+	    current = moves.removeSmallest();
+	    System.out.println(current);
+	    int cx = current.x;
+	    int cy = current.y;
+	    int cc = current.c;
+	    
+	    if(cx >=0 && cx<board.length && 
+	       cy >=0 && cy<board[0].length &&
+	       board[cx][cy].equals("E")){
+		//highlight(current);
+		solution = solutionCoordinates(current);
+		return true;
+	    }		
+
+	    board[cx][cy] =""+ cc;
+	    if(animate){
+		wait(100);
+		System.out.println(this.toString(true));
+		System.out.println("frontier: "+moves.getQueue());
+	    }
+	    int priority = Math.abs(end.x - cx)+Math.abs(end.y-cy);
+	    addCoordinateWithPriority(cx+1,cy,moves,cc,priority);
+	    addCoordinateWithPriority(cx-1,cy,moves,cc,priority);
+	    addCoordinateWithPriority(cx,cy+1,moves,cc,priority);
+	    addCoordinateWithPriority(cx,cy-1,moves,cc,priority);
+
+	}
+	return false;
+    }
+
+    public boolean solveAStar(boolean animate){   
+	PQ<Coordinate> moves = new PQ<Coordinate>();
+	moves.addLast(findStart(),0);
+	Coordinate current;
+	while(moves.hasNext()){
+	    current = moves.removeSmallest();
+	    System.out.println(current);
+	    int cx = current.x;
+	    int cy = current.y;
+	    int cc = current.c;
+	    
+	    if(cx >=0 && cx<board.length && 
+	       cy >=0 && cy<board[0].length &&
+	       board[cx][cy].equals("E")){
+		//highlight(current);
+		solution = solutionCoordinates(current);
+		return true;
+	    }		
+
+	    board[cx][cy] =""+ cc;
+	    if(animate){
+		wait(100);
+		System.out.println(this.toString(true));
+		System.out.println("frontier: "+moves.getQueue());
+	    }
+	    int priority = Math.abs(end.x - cx)+Math.abs(end.y-cy)+
+		Math.abs(start.x - cx)+Math.abs(start.y-cy);
+	    addCoordinateWithPriority(cx+1,cy,moves,cc,priority);
+	    addCoordinateWithPriority(cx-1,cy,moves,cc,priority);
+	    addCoordinateWithPriority(cx,cy+1,moves,cc,priority);
+	    addCoordinateWithPriority(cx,cy-1,moves,cc,priority);
+
+	}
+	return false;
+    }
+
     
     public MyDeque<Coordinate> trace(Coordinate pen){
 	MyDeque<Coordinate> path = new MyDeque<Coordinate>();
@@ -241,7 +338,7 @@ public class Maze{
     
     public static void main(String[]args) throws Exception{
 	Maze myMaze = new Maze("myMaze");
-	System.out.println(myMaze.solveBFS(true));
+	System.out.println(myMaze.solveAStar(true));
 	System.out.println(Arrays.toString(myMaze.solutionCoordinates()));
 	//System.out.println(myMaze.toString(false));
 	}

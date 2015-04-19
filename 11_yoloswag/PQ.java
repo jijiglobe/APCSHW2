@@ -1,55 +1,67 @@
 import java.util.*;
-import java.lang.*;
-public class PQ<T extends Comparable>{
+public class PQ<T>{
     private T[] queue;
+    private int[] priorities;
     private int start,fin,size;
     
     public String name(){
 	return "fairchild.jion";
     }
 
-    public T[] getQueue(){
-	return queue;
+    public String getQueue(){
+	/*String ans  = ""+queue[start];
+	for(int x=0;x<size;x++){
+	    ans+=","+queue[(start+x)%queue.length];
+	}
+	return ans;
+	*/
+	return Arrays.toString(priorities)+"\n"+Arrays.toString(queue);
     }
 
     @SuppressWarnings("unchecked")
     public PQ(){
+	priorities = new int[15];
+	Arrays.fill(priorities,-1);
 	queue = (T[]) (new Object[15]);
         start = 7;
 	fin = 7;
     }
     
-    public void addFirst(T val){
+    public void addFirst(T val, int priority){
 	if(start!=fin || size==0){
 	    if(start!=0){
 		start--;
 		size++;
 		queue[start] = val;
+		priorities[start] = priority;
 	    }else{
 		start = queue.length-1;
 		size++;
-		queue[start] = val;
+		queue[start] = val;	
+		priorities[start] = priority;
 	    }
 	}else{
 	     enlarge(size*2);
-	     addFirst(val);
+	     addFirst(val,priority);
 	}
 	
     }
-    public void addLast(T val){
+    public void addLast(T val, int priority){
 	if(start!=fin || size==0){
 	    if(fin<queue.length-1){
 		fin++;
 		size++;
 		queue[fin-1] = val;
+		priorities[fin-1] = priority;
 	    }else{
 		fin = 0;
 		size++;
 		queue[queue.length-1] = val;
+		priorities[queue.length-1] = priority;
 	    }
 	}else{
 	     enlarge(size*2);
-	     addLast(val);
+	     addLast(val,priority);
 	}
     }
     
@@ -86,13 +98,19 @@ public class PQ<T extends Comparable>{
     @SuppressWarnings("unchecked")
     public void enlarge(int nsize){
         T[] holder = (T[]) (new Object[nsize]);
+	int[] pholder = new int[nsize];
+	Arrays.fill(pholder,-1);
 	int nstart = nsize/2;
 	int nfin = nstart;
+	int startholder = start;
 	while(hasNext()){
 	    holder[nfin] = removeFirst();
+	    pholder[nfin] = priorities[startholder%queue.length];
+	    startholder++;
 	    nfin++;
 	}
 	queue = holder;
+	priorities = pholder;
 	start = nstart;
 	fin = (nfin)%nsize;
 	size = nsize/2;
@@ -104,27 +122,40 @@ public class PQ<T extends Comparable>{
     }
 
     public T removeSmallest(){
-	T smallest = queue[start];
-	for(int i=1;i<=size;i++){
-	    if( queue[i].compareTo(smallest)<0){
-		smallest = queue[i];
+	int smallest = start;
+	for(int x=0;x<priorities.length;x++){
+	    if(priorities[x]!=-1 && priorities[x]<priorities[smallest]){
+		smallest = x;
 	    }
 	}
-	return smallest;
+	T pull = queue[smallest];
+	if(start!=smallest){
+	    priorities[smallest] = priorities[start];
+	    priorities[start] = -1;
+	}
+	queue[smallest] = removeFirst();
+	return pull;
     }
 
-    public T removeLargest(){
-	return queue[start];
-    }
-    /*public static void main(String[]args){
-	MyDeque<Integer> deq = new MyDeque<Integer>();
+    public static void main(String[]args){
+	PQ<Integer> deq = new PQ<Integer>();
+	Random random = new Random();
+	//	ArrayList<Integer> test = new ArrayList<Integer>();
+	//ArrayList<Integer> athing = new ArrayList<Integer>();
 	for(Integer x = 0;x<20;x++){
-	    System.out.println(Arrays.toString(deq.getQueue()));
-	    deq.addFirst(x);
+	    //System.out.println(deq.getQueue());
+	    int p = random.nextInt(10);
+	    //test.add(p);
+	    System.out.println(p);
+	    deq.addFirst(p,p);
 	}
+	//System.out.println(" ");
+	//Arrays.sort(test);
 	while(deq.hasNext()){
-	    System.out.println(deq.removeFirst());
-
+	    System.out.println(deq.getQueue());
+	    //System.out.println(deq.removeSmallest());
+	    //athing.add(deq.removeSmallest());
+	    //System.out.println(athing.equals(test));
 	}
-	}*/
+    }
 }
