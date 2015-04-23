@@ -27,5 +27,11 @@ public TreeNode<E>{
 		right.add(d);
 	    }
 	}
+	public E getData(){
+	    return data;
+	}
+	public void setData(E d){
+	    data = d;
+	}
     }
 	    
