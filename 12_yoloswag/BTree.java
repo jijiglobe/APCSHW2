@@ -24,15 +24,15 @@ public class BTree<E> {
     private Random random;
 
     private TreeNode<E> root;
-    
+
     public BTree(String seed){
-	this();
-	random = new Random(seed);
+        this();
+        random = new Random(seed);
     }
 
     public BTree() {
-	root = null;
-	random = new Random();
+        root = null;
+        random = new Random();
     }
 
     /*======== public void add() ==========
@@ -42,11 +42,11 @@ public class BTree<E> {
       Wrapper method for the recursive add()
       ====================*/     
     public void add( E d ) { 
-	if(root == null){
-	    root = new TreeNode<E>(d);
-	}else{
-	    
-	}
+        if(root == null){
+            root = new TreeNode<E>(d);
+        } else {
+            root.add(d);
+        }
     }
 
     /*======== public void add() ==========
@@ -61,16 +61,17 @@ public class BTree<E> {
       added to randomly.
       ====================*/
     private void add( TreeNode<E> curr, TreeNode<E> bn ) {
+        curr.add(bn);
     }
-    
+
     public void traverse( int mode) {
-	if ( mode == PRE_ORDER )
-	    preOrder( root );
-	else if ( mode == IN_ORDER )
-	    inOrder( root );
-	else
-	    postOrder( root );
-	System.out.println();
+        if ( mode == PRE_ORDER )
+            preOrder( root );
+        else if ( mode == IN_ORDER )
+            inOrder( root );
+        else
+            postOrder( root );
+        System.out.println();
     }
 
     /*======== public void preOrder() ==========
@@ -81,6 +82,12 @@ public class BTree<E> {
       pre-order Traversal
       ====================*/
     public void preOrder( TreeNode<E> curr ) {
+        if (curr == null)
+            return;
+
+        preOrder(curr.getLeft());
+        preOrder(curr.getRight());
+        System.out.print(curr.getData() + " ");
     }
 
 
@@ -92,6 +99,12 @@ public class BTree<E> {
       in-order Traversal
       ====================*/
     public void inOrder( TreeNode<E> curr ) {
+        if (curr == null)
+            return;
+
+        inOrder(curr.getLeft());
+        System.out.print(curr.getData() + " ");
+        inOrder(curr.getRight());
     }
 
     /*======== public void postOrder() ==========
@@ -103,8 +116,14 @@ public class BTree<E> {
 
       ====================*/
     public void postOrder( TreeNode<E> curr ) {
+        if (curr == null)
+            return;
+
+        System.out.print(curr.getData() + " ");
+        postOrder(curr.getLeft());
+        postOrder(curr.getRight());
     }
-    
+
     /*======== public int getHeight()) ==========
       Inputs:   
       Returns: The height of the tree
@@ -112,7 +131,7 @@ public class BTree<E> {
       Wrapper for the recursive getHeight method
       ====================*/
     public int getHeight() {
-	return getHeight( root );
+        return getHeight( root );
     }
     /*======== public int getHeight() ==========
       Inputs:   TreeNode<E> curr  
@@ -120,7 +139,7 @@ public class BTree<E> {
       
       ====================*/
     public int getHeight( TreeNode<E> curr ) {
-	return -1;
+        return -1;
     }
 
     /*======== public String getLevel() ==========
@@ -132,9 +151,9 @@ public class BTree<E> {
       
 	       ====================*/
     private String getLevel( TreeNode<E> curr, int level, int currLevel ) {
-	return "";
+        return "";
     }
-    
+
     /*======== public String toString()) ==========
       Inputs:   
       Returns: A string representation of the tree
@@ -157,24 +176,24 @@ public class BTree<E> {
 
 	    ====================*/
     public String toString() {
-	return "";
+        return "";
     }
-    
+
 
     public static void main( String[] args ) {
 
-	BTree<Integer> t = new BTree<Integer>();
+        BTree<Integer> t = new BTree<Integer>();
 
-	for ( int i=0; i < 8; i++ ) 
-	    t.add( i );
-	System.out.println( "Pre-order: ");
-	t.traverse( PRE_ORDER );
-	System.out.println( "In-order: ");
-	t.traverse( IN_ORDER );
-	System.out.println( "Post-order: ");
-	t.traverse( POST_ORDER );
-	System.out.println( "Height: " + t.getHeight() );
+        for ( int i=0; i < 8; i++ ) 
+            t.add( i );
+        System.out.println( "Pre-order: ");
+        t.traverse( PRE_ORDER );
+        System.out.println( "In-order: ");
+        t.traverse( IN_ORDER );
+        System.out.println( "Post-order: ");
+        t.traverse( POST_ORDER );
+        System.out.println( "Height: " + t.getHeight() );
 
-	System.out.println( t );
+        System.out.println( t );
     }
 }

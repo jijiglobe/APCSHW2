@@ -5,4 +5,7 @@ public class Coordinate{
 	y = ny;
 	c = nc;
     }
+    public String toString(){
+	return "("+x+","+y+")";
+    }
 }

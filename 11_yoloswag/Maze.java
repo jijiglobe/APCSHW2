@@ -176,7 +176,7 @@ public class Maze{
 	Coordinate current;
 	while(moves.hasNext()){
 	    current = moves.removeSmallest();
-	    System.out.println(current);
+	    //System.out.println(current);
 	    int cx = current.x;
 	    int cy = current.y;
 	    int cc = current.c;
@@ -211,7 +211,7 @@ public class Maze{
 	Coordinate current;
 	while(moves.hasNext()){
 	    current = moves.removeSmallest();
-	    System.out.println(current);
+	    //System.out.println(current);
 	    int cx = current.x;
 	    int cy = current.y;
 	    int cc = current.c;
@@ -312,6 +312,12 @@ public class Maze{
     public boolean solveDFS(){
 	return solveDFS(false);
     }
+    public boolean solveBest(){
+	return solveBest(false);
+    }
+    public boolean solveAStar(){
+	return solveAStar(false);
+    }
     
     /**return an array [x1,y1,x2,y2,x3,y3...]
      *that contains the coordinates of the solution from start to end.
@@ -338,7 +344,7 @@ public class Maze{
     
     public static void main(String[]args) throws Exception{
 	Maze myMaze = new Maze("myMaze");
-	System.out.println(myMaze.solveAStar(true));
+	System.out.println(myMaze.solveAStar());
 	System.out.println(Arrays.toString(myMaze.solutionCoordinates()));
 	//System.out.println(myMaze.toString(false));
 	}
