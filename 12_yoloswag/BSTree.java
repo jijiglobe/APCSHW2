@@ -17,44 +17,35 @@ public class BSTreeNode<T extends Comparable> {
 
     public BSTreeNode( T d ) {
  
- data = d;
- left = right = null;
+	data = d;
+	left = right = null;
     }
     
     //accessors
     public T getData() {
-    return data;
+	return data;
     }
     public BSTreeNode<T> getLeft() {
-    return left;
+	return left;
     }
     public BSTreeNode<T> getRight() {
-    return right;
+	return right;
     }
 
     //mutators
     public void setData( T d ) {
-    data = d;
+	data = d;
     }
     public void setLeft( BSTreeNode<T> l ) {
-    left = l;
+	left = l;
     }
     public void setRight( BSTreeNode<T> r ) {
-    right = r;
+	right = r;
     }
 }
-
-
-
-
 //
-
 //
-
 //Your binary search tree skeleton file:
-
-
-
 import java.io.*;
 import java.util.*;
 
@@ -63,14 +54,14 @@ public class BSTree <T extends Comparable> {
     private BSTreeNode<T> root;
 
     public BSTree() {
-    root = null;
+	root = null;
     }
 
     public boolean isEmpty() {
-    return root == null;
+	return root == null;
     }
     public boolean isLeaf( BSTreeNode<T> t ) {
-    return (t.getLeft() == null && t.getRight() == null);
+	return (t.getLeft() == null && t.getRight() == null);
     }
 
     /*======== public void add() ==========
@@ -80,18 +71,22 @@ public class BSTree <T extends Comparable> {
       Wrapper for the recursive add method
       ====================*/
     public void add( T c ) {
-    root = add( root, new BSTreeNode<T>(c) );
+	root = add( root, new BSTreeNode<T>(c) );
     }
 
     /*======== public BSTreeNode<T> add() ==========
       Inputs:  BSTreeNode<T> curr
-               BSTreeNode<T> t 
+      BSTreeNode<T> t 
       Returns: 
 
       Add t to the correct place in the tree rooted at curr.
       ====================*/
     private BSTreeNode<T> add(BSTreeNode<T> curr, BSTreeNode<T> t) {
-    return null;
+	if(curr.getData().compareTo(t)<0){
+	    if(curr.getLeft() == null){
+		curr.setLeft()
+	    
+	}
     }
 
     /*======== public void remove() ==========
@@ -101,19 +96,19 @@ public class BSTree <T extends Comparable> {
       Wrapper for the recursive remove method
       ====================*/
     public void remove( T c ) {
-    root = remove( root, c );
+	root = remove( root, c );
     }
 
     /*======== public BSTreeNode<T> remove() ==========
       Inputs:   BSTreeNode<T> curr
-      		T c
+      T c
       Returns: 
 
       Should remove the value c from the tree rooted at
       curr, if it exists.
       ====================*/
     private BSTreeNode<T> remove( BSTreeNode<T> curr, T c ) {
-    return null;
+	return null;
     }
 
 
@@ -124,8 +119,8 @@ public class BSTree <T extends Comparable> {
       Wrapper for the recursive inOrder method
       ====================*/
     public void inOrder() {
-    inOrderHelper( root );
-    System.out.println();
+	inOrderHelper( root );
+	System.out.println();
     }
 
     /*======== public void inOrderHelper() ==========
@@ -136,8 +131,8 @@ public class BSTree <T extends Comparable> {
       root t.
       ====================*/
     public void inOrderHelper( BSTreeNode<T> t ) {
-    if (t == null) 
-        return;
+	if (t == null) 
+	    return;
 	inOrderHelper( t.getLeft() );
 	System.out.print( t.getData() + " ");
 	inOrderHelper( t.getRight() );
