@@ -1,5 +1,5 @@
 public class MyHeap<T extends comparable>{
-    private int[] heap;
+    private ArrayList<Integer> heap;
     private int next;
     private boolean isMax;
 
@@ -9,7 +9,7 @@ public class MyHeap<T extends comparable>{
     
     
     public MyHeap(boolean max){
-	heap = new int[10];
+	heap = new ArrayList<Integer>();
 	next = 0;
 	isMax = max;
     }
@@ -19,15 +19,34 @@ public class MyHeap<T extends comparable>{
     }
 
     public int remove(){
-	return heap[0];
+	int holder = heap.get(0);
+	next--;
+	heap.set(0,heap.remove(next));
+	
     }
     
-    public void add(){
-	return;
+    public void add(int x){
+	heap.add(x);
+	reorder(next);
+	next++;
     }
     
     public int peak(){
-	return heap[0];
+	return heap.get(0);
     }
 
+    private void swap(int x, int y){
+	int holder =  heap.get(y);
+	heap.set(y, heap.get(x));
+	heap.set(x,holder);
+    }
+
+    private void reorder(int x){
+	if(x!=0){
+	    if(heap.get(x)>heap.get(x/2)){
+		swap(x,x/2);
+		reorder(x/2);
+	    }
+	}
+    }
 }
