@@ -90,4 +90,15 @@ public class MyHeap{
 	    return;
 	}
     }
+    public static void main(String[]args){
+	MyHeap mine = new MyHeap(false);
+	Random random = new Random();
+	for(int x=0;x<10;x++){
+	    mine.add(random.nextInt(10));
+	}
+	for(int x=0;x<10;x++){
+	    System.out.println(mine.remove());
+	}
+    }
+
 }
