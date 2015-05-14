@@ -60,12 +60,4 @@ public class RunningMedian{
 	}
     }
 
-    public int getMedian(){
-	if(overkill.size()==1){
-	    return overkill.get(0);
-	}else{
-	    return (overkill.get(0)+overkill.get(1))/2;
-	}
-    }
-    
 }
