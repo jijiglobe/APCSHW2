@@ -24,11 +24,16 @@ public class MyHeap{
     }
 
     public int remove(){
+	if(next <3){
+	    next--;
+	    return heap.remove(1);
+	}
 	int holder = heap.get(1);
 	next--;
 	heap.set(1,heap.remove(next));
 	backOrder(1);
 	return holder;
+	
     }
     
     public void add(int x){
@@ -69,38 +74,45 @@ public class MyHeap{
 	int left = x*2;
 	int right = x*2 +1;
 	int swapper;
-	if(left>=heap.size()){
+	//if(left>=heap.size()){
+	//    return;
+	//}
+	try{
+	    if(inOrder(heap.get(left),heap.get(right))
+	       //|| right>=heap.size()
+	       ){
+		swapper = left;
+	    }else{
+		swapper = right;
+	    }
+	    
+	    if(inOrder(heap.get(swapper),heap.get(x))){
+		swap(x,swapper);
+	    }
+	    //System.out.println("hello" + this);
+	    backOrder(swapper);
+	} catch(IndexOutOfBoundsException e){
 	    return;
 	}
-	if(inOrder(heap.get(left),heap.get(right))
-	   || right>=heap.size()){
-	    swapper = left;
-	}else{
-	    swapper = right;
-	}
-	
-	if(inOrder(heap.get(swapper),heap.get(x))){
-		swap(x,swapper);
-	}
-	backOrder(swapper);
     }
 
     /*    private void reorderBackwards(int x){
-	if(x!=0){
-	    if(heap.get(x)>heap.get(x/2)){
-		swap(x,x/2);
-		reorder(x/2);
-	    }
-	}
-	}*/
+	  if(x!=0){
+	  if(heap.get(x)>heap.get(x/2)){
+	  swap(x,x/2);
+	  reorder(x/2);
+	  }
+	  }
+	  }*/
     public static void main(String[]args){
 	Random random = new Random();
 	MyHeap mine = new MyHeap();
 	for(int x=0;x<10;x++){
 	    mine.add(random.nextInt(10));
 	}
+	System.out.println(mine);
 	for(int x=0;x<10;x++){
-	    System.out.println(heap.remove());
+	    System.out.println("removed: "+mine.remove());
 	}
     }
 
