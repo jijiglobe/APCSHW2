@@ -1,13 +1,15 @@
 import java.util.*;
 import java.io.*;
 
-publicclass  TreeNode<E> {
+public class TreeNode<E> {
     private TreeNode<E> left, right;
     private E data;
+    private Random random;
 
     public TreeNode() {
         left = null;
         right = null;
+        random = new Random();
     }
 
     public TreeNode(E d) {
@@ -15,11 +17,11 @@ publicclass  TreeNode<E> {
         data = d;
     }
 
-    public add(E d) {
+    public void add(E d) {
         this.add(new TreeNode<E>(d));
     }
 
-    public add(TreeNode<E> node) {
+    public void add(TreeNode<E> node) {
         if (left == null) {
             left = node;
         } else if (right == null) {

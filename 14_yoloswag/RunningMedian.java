@@ -3,6 +3,10 @@ public class RunningMedian{
     MyHeap greater,lesser;
     int median;
     ArrayList<Integer> overkill;
+
+    public String name(){
+	return "Jion Fairchild";
+    }
     
     public RunningMedian(){
 	greater = new MyHeap();

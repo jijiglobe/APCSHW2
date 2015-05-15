@@ -22,13 +22,7 @@ public class BTree<E> {
     public static final int IN_ORDER = 1;
     public static final int POST_ORDER = 2;
     private Random random;
-
     private TreeNode<E> root;
-
-    public BTree(String seed){
-        this();
-        random = new Random(seed);
-    }
 
     public BTree() {
         root = null;
@@ -181,7 +175,6 @@ public class BTree<E> {
 
 
     public static void main( String[] args ) {
-
         BTree<Integer> t = new BTree<Integer>();
 
         for ( int i=0; i < 8; i++ ) 

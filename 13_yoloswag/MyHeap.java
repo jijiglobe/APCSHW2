@@ -4,6 +4,10 @@ public class MyHeap{
     private int next;
     private boolean isMax;
 
+    public String name(){
+	return "Jion Fairchild";
+    }
+
     public String toString(){ 
 	String ans = "[";
 	for(Integer x : heap){
@@ -21,6 +25,10 @@ public class MyHeap{
 
     public MyHeap(){
 	this(true);
+    }
+    
+    public int getSize(){
+	return heap.size()-1;
     }
 
     public int remove(){
@@ -90,7 +98,7 @@ public class MyHeap{
 	    return;
 	}
     }
-    public static void main(String[]args){
+    /*    public static void main(String[]args){
 	MyHeap mine = new MyHeap(false);
 	Random random = new Random();
 	for(int x=0;x<10;x++){
@@ -99,6 +107,6 @@ public class MyHeap{
 	for(int x=0;x<10;x++){
 	    System.out.println(mine.remove());
 	}
-    }
+	}*/
 
 }

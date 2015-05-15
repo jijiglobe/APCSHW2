@@ -129,8 +129,8 @@ public class BSTree <T extends Comparable> {
       Wrapper for the recursive remove method
       ====================*/
     public void remove( T c ) {
-	//root = remove( root, c );
-	BSTree<T> location = root.findVal(c);
+	root = remove( root, c );
+	/*BSTree<T> location = root.findVal(c);
 	if(location==null) return;
 	if(random.nextInt(2)==0){
 	    BSTree<T> maxSubtree =location.findLargestValue();
@@ -139,7 +139,7 @@ public class BSTree <T extends Comparable> {
 		maxSubtree.setLeft
 	}else{
 	    
-	}
+	}*/
 	    
     }
 
