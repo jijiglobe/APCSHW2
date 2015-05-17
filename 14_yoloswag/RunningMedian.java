@@ -1,17 +1,17 @@
 import java.util.*;
 public class RunningMedian{
     MyHeap greater,lesser;
-    int median;
-    ArrayList<Integer> overkill;
+    Integer median;
+    // ArrayList<Integer> overkill;
 
     public String name(){
 	return "Jion Fairchild";
     }
     
     public RunningMedian(){
-	greater = new MyHeap();
+	greater = new MyHeap(false);
 	lesser = new MyHeap();
-	overkill = new ArrayList<integer>();
+	//overkill = new ArrayList<integer>();
     }
 
     /*public void store(){
@@ -29,7 +29,7 @@ public class RunningMedian{
 	}
 	}*/
     
-    public void getMedian(int value){
+    public int getMedian(){
 	if(median==null){
 	    return (lesser.peek()+greater.peek())/2;
 	}else {
@@ -63,5 +63,17 @@ public class RunningMedian{
 	    add(value);
 	}
     }
-
+    public static void main(String[]args){
+	//ARM his = new ARM();
+	RunningMedian mine =  new RunningMedian();
+	Random random = new Random();
+	for(int x = 0;x<100;x++){
+	    int y = random.nextInt(10);
+	    //his.add(y);
+	    mine.add(y);
+	    //System.out.printline(his.getMedian() == mine.getMedian());
+	    System.out.println(mine.getMedian());
+	}
+	
+    }
 }
