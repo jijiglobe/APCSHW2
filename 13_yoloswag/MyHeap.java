@@ -27,18 +27,18 @@ public class MyHeap{
 	this(true);
     }
     
-    public int getSize(){
+    public int Size(){
 	return heap.size()-1;
     }
 
     public int remove(){
-	if(next < 3){
+	if(heap.size()<3){
 	    next--;
 	    return heap.remove(1);
 	}
 	int holder = heap.get(1);
 	next--;
-	heap.set(1,heap.remove(next));
+	heap.set(1,heap.remove(heap.size()-1));
 	backOrder(1);
 	return holder;
 	
@@ -82,6 +82,7 @@ public class MyHeap{
 	int left = x*2;
 	int right = x*2 +1;
 	int swapper;
+	System.out.println(this);
 	try{
 	    if(inOrder(heap.get(left),heap.get(right))
 	       ){
@@ -92,21 +93,29 @@ public class MyHeap{
 	    
 	    if(inOrder(heap.get(swapper),heap.get(x))){
 		swap(x,swapper);
+		backOrder(swapper);
 	    }
-	    backOrder(swapper);
+	    
 	} catch(IndexOutOfBoundsException e){
 	    return;
 	}
     }
-    /*    public static void main(String[]args){
+    public static void main(String[]args){
 	MyHeap mine = new MyHeap(false);
-	Random random = new Random();
-	for(int x=0;x<10;x++){
-	    mine.add(random.nextInt(10));
+	Random random = new Random(2);
+	for(int x=0;x<8;x++){
+	    int y = random.nextInt(10);
+	    mine.add(y);
+	    /*if(random.nextBoolean()){
+		mine.remove();
+		}*/
+	    System.out.println(y);
 	}
-	for(int x=0;x<10;x++){
+	System.out.println("GANGSTA");
+	for(int x=0;x<8;x++){
+	    //System.out.println(mine);
 	    System.out.println(mine.remove());
 	}
-	}*/
+    }
 
 }
